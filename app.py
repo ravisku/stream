@@ -52,21 +52,7 @@ def main():
                 st.write("Data from PostgreSQL:")
                 st.dataframe(df)
 
-                # Fix month ordering if applicable
-                months_order = [
-                    "January", "February", "March", "April", "May", "June",
-                    "July", "August", "September", "October", "November", "December"
-                ]
-                if 'month' in df.columns:
-                    df['month'] = pd.Categorical(df['month'], categories=months_order, ordered=True)
-                    df = df.sort_values('month')
-
-                # Display the dataframe
-                st.dataframe(df)
-
-                # Set the month column as the index for plotting
-                if 'avg_customer_transaction_amount' in df.columns:
-                    st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+                st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
 
             # Close the connection
             connection.close()
