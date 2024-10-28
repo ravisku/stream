@@ -99,6 +99,7 @@ def main():
                 LEFT JOIN
                     cte_product_category p 
                     ON t.subscription_id = p.subscription_id 
+            WHERE p.product_category is NOT NULL
             GROUP BY
                 1 
             ORDER BY
