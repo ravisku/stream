@@ -33,7 +33,7 @@ def main():
 
     with tab1:
         st.header("Average User Transaction Amount for the Last 6 Months")
-        query = st.text_area("SQL Query", value="""  
+        query_1 = st.text_area("SQL Query", value="""  
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
                 TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
@@ -54,19 +54,19 @@ def main():
 
             if connection:
                 # Fetch data from the database
-                df = fetch_data(query, connection)
-                if df is not None:
+                df_1 = fetch_data(query_1, connection)
+                if df_1 is not None:
                     st.write("Data from PostgreSQL:")
-                    st.dataframe(df)
+                    st.dataframe(df_1)
 
-                    st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+                    st.bar_chart(df_1.set_index('month')['avg_customer_transaction_amount'])
 
                 # Close the connection
                 connection.close()
 
     with tab2:
         st.header("Product Category with the Highest Total Sales")
-        query = st.text_area("SQL Query", value="""  
+        query_2 = st.text_area("SQL Query", value="""  
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
                 TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
@@ -87,19 +87,19 @@ def main():
 
             if connection:
                 # Fetch data from the database
-                df = fetch_data(query, connection)
-                if df is not None:
+                df_2 = fetch_data(query_2, connection)
+                if df_2 is not None:
                     st.write("Data from PostgreSQL:")
-                    st.dataframe(df)
+                    st.dataframe(df_2)
 
-                    st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+                    st.bar_chart(df_2.set_index('month')['avg_customer_transaction_amount'])
 
                 # Close the connection
                 connection.close()
 
     with tab3:
         st.header("Monthly Revenue Growth for the Last 6 Months")
-        query = st.text_area("SQL Query", value="""  
+        query_3 = st.text_area("SQL Query", value="""  
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
                 TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
@@ -120,12 +120,12 @@ def main():
 
             if connection:
                 # Fetch data from the database
-                df = fetch_data(query, connection)
-                if df is not None:
+                df_3 = fetch_data(query_3, connection)
+                if df_3 is not None:
                     st.write("Data from PostgreSQL:")
-                    st.dataframe(df)
+                    st.dataframe(df_3)
 
-                    st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+                    st.bar_chart(df_3.set_index('month')['avg_customer_transaction_amount'])
 
                 # Close the connection
                 connection.close()
