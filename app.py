@@ -37,15 +37,13 @@ def main():
     port = st.text_input("Port", value="5432")
 
     # Query to execute
-    query = st.text_area("SQL Query", value=""" SELECT 
-    EXTRACT(MONTH FROM dt) AS month_id, 
-    TO_CHAR(dt, 'Month') AS "month", 
-    SUM(total) AS monthly_total_transaction_amount,
-    COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
-    ROUND(SUM(total)/COUNT(DISTINCT customer_id), 2) as avg_customer_transaction_amount
-FROM
-    silver.fct_transactions 
-GROUP BY 1,2 """)
+    query = st.text_area("SQL Query", value="""  
+    SELECT 
+        TO_CHAR(dt, 'Month') AS "month", 
+        ROUND(SUM(total)/COUNT(DISTINCT customer_id), 2) as avg_customer_transaction_amount
+    FROM
+        silver.fct_transactions 
+    GROUP BY 1,2  """)
 
     # Create a button to fetch data
     if st.button("Fetch Data"):
