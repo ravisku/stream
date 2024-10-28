@@ -6,11 +6,11 @@ import pandas as pd
 def create_connection(db_name, user, password, host, port):
     try:
         connection = psycopg2.connect(
-            dbname=db_name,
-            user=user,
-            password=password,
-            host=host,
-            port=port
+            dbname=st.secrets["database"]["db_name"],
+            user=st.secrets["database"]["user"],
+            password=st.secrets["database"]["password"],
+            host=st.secrets["database"]["host"],
+            port=st.secrets["database"]["port"]
         )
         return connection
     except Exception as e:
@@ -28,13 +28,6 @@ def fetch_data(query, connection):
 def main():
     # Streamlit app setup
     st.title("Getstream Assignment Dashboard")
-
-    # Database connection details
-    db_name = st.text_input("Database Name", value="postgres")
-    user = st.text_input("User", value="postgres")
-    password = st.text_input("Password", value="Streamdeassignment", type="password")
-    host = st.text_input("Host", value="stream.cd2o2ocim4fu.us-west-2.rds.amazonaws.com")
-    port = st.text_input("Port", value="5432")
 
     # Query to execute
     query = st.text_area("SQL Query", value="""  
