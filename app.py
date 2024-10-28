@@ -31,14 +31,16 @@ def main():
 
     # Query to execute
     query = st.text_area("SQL Query", value="""  
-    SELECT 
-        TO_CHAR(dt, 'Month') AS "month", 
-        ROUND(SUM(total)/COUNT(DISTINCT customer_id), 2) as avg_customer_transaction_amount
-    FROM
-        silver.fct_transactions 
-    GROUP BY 1
-    ORDER BY 
-    TO_DATE(TO_CHAR(dt, 'Month'), 'Month') DESC LIMIT 6;  """)
+        SELECT 
+        cast(date_trunc('month', dt) AS date) AS month_date,
+        TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
+        ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
+    FROM 
+        silver.fct_transactions
+    WHERE 
+        cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
+    GROUP BY 1, 2
+    ORDER BY month_date;  """)
 
     # Create a button to fetch data
     if st.button("Fetch Data"):
