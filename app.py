@@ -36,7 +36,9 @@ def main():
         ROUND(SUM(total)/COUNT(DISTINCT customer_id), 2) as avg_customer_transaction_amount
     FROM
         silver.fct_transactions 
-    GROUP BY 1  """)
+    GROUP BY 1
+    ORDER BY 
+    TO_DATE(TO_CHAR(dt, 'Month'), 'Month') DESC LIMIT 6;  """)
 
     # Create a button to fetch data
     if st.button("Fetch Data"):
