@@ -116,7 +116,7 @@ def main():
                     st.write("Data from PostgreSQL:")
                     st.dataframe(df_2)
 
-                    st.bar_chart(df_2.set_index('month')['avg_customer_transaction_amount'])
+                    st.bar_chart(df_2.set_index('product_category')['total_sales'])
 
                 # Close the connection
                 connection.close()
@@ -124,18 +124,24 @@ def main():
     with tab3:
         st.header("Monthly Revenue Growth for the Last 6 Months")
         query_3 = """  
+            WITH cte_revenue_growth AS (
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
-                TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
-                SUM(total) AS monthly_total_transaction_amount,
-                COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
-                ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
+                TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month",
+                SUM(total) AS monthly_revenue,
+                LAG(SUM(total)) OVER(ORDER BY cast(date_trunc('month', dt) AS date)) AS previous_monthly_revenue,
+                (SUM(total)) - COALESCE(LAG(SUM(total)) OVER(ORDER BY cast(date_trunc('month', dt) AS date)), 0) AS revenue_growth
             FROM 
-                silver.fct_transactions
+                silver.fct_transactions 
+            GROUP BY 1,2 
+            )
+            SELECT 
+                * 
+            FROM 
+                cte_revenue_growth 
             WHERE 
-                cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
-            GROUP BY 1, 2
-            ORDER BY month_date;  """
+                month_date >= date_trunc('month', current_date) - INTERVAL '5 months';
+            """
 
         # Create a button to fetch data
         if st.button("Fetch Monthly Revenue Growth for the Last 6 Months"):
@@ -149,7 +155,7 @@ def main():
                     st.write("Data from PostgreSQL:")
                     st.dataframe(df_3)
 
-                    st.bar_chart(df_3.set_index('month')['avg_customer_transaction_amount'])
+                    st.bar_chart(df_3.set_index('month')['revenue_growth'])
 
                 # Close the connection
                 connection.close()
