@@ -48,7 +48,7 @@ def main():
             ORDER BY month_date;  """
 
         # Create a button to fetch data
-        if st.button("Fetch Data"):
+        if st.button("Fetch Average User Transaction for the Last 6 Months"):
             # Create a connection
             connection = create_connection()
 
@@ -81,7 +81,7 @@ def main():
             ORDER BY month_date;  """
 
         # Create a button to fetch data
-        if st.button("Fetch Data"):
+        if st.button("Fetch Product Category with the Highest Total Sales"):
             # Create a connection
             connection = create_connection()
 
@@ -114,7 +114,7 @@ def main():
             ORDER BY month_date;  """
 
         # Create a button to fetch data
-        if st.button("Fetch Data"):
+        if st.button("Fetch Monthly Revenue Growth for the Last 6 Months"):
             # Create a connection
             connection = create_connection()
 
