@@ -6,11 +6,11 @@ import pandas as pd
 def create_connection():
     try:
         connection = psycopg2.connect(
-            dbname=st.secrets["database"]["db_name"],
-            user=st.secrets["database"]["user"],
-            password=st.secrets["database"]["password"],
-            host=st.secrets["database"]["host"],
-            port=st.secrets["database"]["port"]
+            db_name=st.secrets["database"]["db_name"],
+            db_user=st.secrets["database"]["user"],
+            db_password=st.secrets["database"]["password"],
+            db_host=st.secrets["database"]["host"],
+            db_port=st.secrets["database"]["port"]
         )
         return connection
     except Exception as e:
