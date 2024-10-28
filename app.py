@@ -41,7 +41,7 @@ def main():
     # Create a button to fetch data
     if st.button("Fetch Data"):
         # Create a connection
-        connection = create_connection(db_name, user, password, host, port)
+        connection = create_connection()
 
         if connection:
             # Fetch data from the database
