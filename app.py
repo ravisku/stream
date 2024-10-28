@@ -29,37 +29,106 @@ def main():
     # Streamlit app setup
     st.title("Getstream Assignment Dashboard")
 
-    # Query to execute
-    query = st.text_area("SQL Query", value="""  
-        SELECT 
-        cast(date_trunc('month', dt) AS date) AS month_date,
-        TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
-        SUM(total) AS monthly_total_transaction_amount,
-        COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
-        ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
-    FROM 
-        silver.fct_transactions
-    WHERE 
-        cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
-    GROUP BY 1, 2
-    ORDER BY month_date;  """)
+    tab1, tab2, tab3 = st.tabs(["Average User Transaction Amount for the Last 6 Months", "Product Category with the Highest Total Sales", "Monthly Revenue Growth for the Last 6 Months"])
 
-    # Create a button to fetch data
-    if st.button("Fetch Data"):
-        # Create a connection
-        connection = create_connection()
+    with tab1:
+        st.header("Average User Transaction Amount for the Last 6 Months")
+        query = st.text_area("SQL Query", value="""  
+            SELECT 
+                cast(date_trunc('month', dt) AS date) AS month_date,
+                TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
+                SUM(total) AS monthly_total_transaction_amount,
+                COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
+                ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
+            FROM 
+                silver.fct_transactions
+            WHERE 
+                cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
+            GROUP BY 1, 2
+            ORDER BY month_date;  """)
 
-        if connection:
-            # Fetch data from the database
-            df = fetch_data(query, connection)
-            if df is not None:
-                st.write("Data from PostgreSQL:")
-                st.dataframe(df)
+        # Create a button to fetch data
+        if st.button("Fetch Data"):
+            # Create a connection
+            connection = create_connection()
 
-                st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+            if connection:
+                # Fetch data from the database
+                df = fetch_data(query, connection)
+                if df is not None:
+                    st.write("Data from PostgreSQL:")
+                    st.dataframe(df)
 
-            # Close the connection
-            connection.close()
+                    st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+
+                # Close the connection
+                connection.close()
+
+    with tab2:
+        st.header("Product Category with the Highest Total Sales")
+        query = st.text_area("SQL Query", value="""  
+            SELECT 
+                cast(date_trunc('month', dt) AS date) AS month_date,
+                TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
+                SUM(total) AS monthly_total_transaction_amount,
+                COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
+                ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
+            FROM 
+                silver.fct_transactions
+            WHERE 
+                cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
+            GROUP BY 1, 2
+            ORDER BY month_date;  """)
+
+        # Create a button to fetch data
+        if st.button("Fetch Data"):
+            # Create a connection
+            connection = create_connection()
+
+            if connection:
+                # Fetch data from the database
+                df = fetch_data(query, connection)
+                if df is not None:
+                    st.write("Data from PostgreSQL:")
+                    st.dataframe(df)
+
+                    st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+
+                # Close the connection
+                connection.close()
+
+    with tab3:
+        st.header("Monthly Revenue Growth for the Last 6 Months")
+        query = st.text_area("SQL Query", value="""  
+            SELECT 
+                cast(date_trunc('month', dt) AS date) AS month_date,
+                TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
+                SUM(total) AS monthly_total_transaction_amount,
+                COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
+                ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
+            FROM 
+                silver.fct_transactions
+            WHERE 
+                cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
+            GROUP BY 1, 2
+            ORDER BY month_date;  """)
+
+        # Create a button to fetch data
+        if st.button("Fetch Data"):
+            # Create a connection
+            connection = create_connection()
+
+            if connection:
+                # Fetch data from the database
+                df = fetch_data(query, connection)
+                if df is not None:
+                    st.write("Data from PostgreSQL:")
+                    st.dataframe(df)
+
+                    st.bar_chart(df.set_index('month')['avg_customer_transaction_amount'])
+
+                # Close the connection
+                connection.close()
 
 # Entry point for the script
 if __name__ == '__main__':
