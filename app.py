@@ -7,10 +7,10 @@ def create_connection():
     try:
         connection = psycopg2.connect(
             db_name=st.secrets["database"]["db_name"],
-            db_user=st.secrets["database"]["user"],
-            db_password=st.secrets["database"]["password"],
-            db_host=st.secrets["database"]["host"],
-            db_port=st.secrets["database"]["port"]
+            db_user=st.secrets["database"]["db_user"],
+            db_password=st.secrets["database"]["db_password"],
+            db_host=st.secrets["database"]["db_host"],
+            db_port=st.secrets["database"]["db_port"]
         )
         return connection
     except Exception as e:
