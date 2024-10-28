@@ -67,18 +67,42 @@ def main():
     with tab2:
         st.header("Product Category with the Highest Total Sales")
         query_2 = """  
-            SELECT 
-                cast(date_trunc('month', dt) AS date) AS month_date,
-                TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
-                SUM(total) AS monthly_total_transaction_amount,
-                COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
-                ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
-            FROM 
-                silver.fct_transactions
-            WHERE 
-                cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
-            GROUP BY 1, 2
-            ORDER BY month_date;  """
+            WITH cte_products AS 
+            (
+                SELECT
+                    subscription_id,
+                    split_part(product, ' ', 1) AS product_category 
+                FROM
+                    silver.dim_products 
+                GROUP BY
+                    1,
+                    2 
+                ORDER BY
+                    2 
+            )
+            ,
+            cte_product_category AS 
+            (
+                SELECT
+                    subscription_id,
+                    STRING_AGG(product_category, ' | ') AS product_category 
+                FROM
+                    cte_products 
+                GROUP BY
+                    1 
+            )
+            SELECT
+                p.product_category,
+                SUM(t.total) AS total_sales 
+            FROM
+                silver.fct_transactions t 
+                LEFT JOIN
+                    cte_product_category p 
+                    ON t.subscription_id = p.subscription_id 
+            GROUP BY
+                1 
+            ORDER BY
+                2 DESC;  """
 
         # Create a button to fetch data
         if st.button("Fetch Product Category with the Highest Total Sales"):
