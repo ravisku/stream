@@ -3,7 +3,7 @@ import psycopg2
 import pandas as pd
 
 # Function to create a database connection
-def create_connection(db_name, user, password, host, port):
+def create_connection():
     try:
         connection = psycopg2.connect(
             dbname=st.secrets["database"]["db_name"],
