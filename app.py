@@ -43,7 +43,7 @@ def main():
         ROUND(SUM(total)/COUNT(DISTINCT customer_id), 2) as avg_customer_transaction_amount
     FROM
         silver.fct_transactions 
-    GROUP BY 1,2  """)
+    GROUP BY 1  """)
 
     # Create a button to fetch data
     if st.button("Fetch Data"):
