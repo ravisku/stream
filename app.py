@@ -33,6 +33,8 @@ def main():
     query = st.text_area("SQL Query", value="""  
         SELECT 
         cast(date_trunc('month', dt) AS date) AS month_date,
+        SUM(total) AS monthly_total_transaction_amount,
+        COUNT(DISTINCT customer_id) AS monthly_customers_with_transactions,
         TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
         ROUND(SUM(total) / COUNT(DISTINCT customer_id), 2) AS avg_customer_transaction_amount
     FROM 
