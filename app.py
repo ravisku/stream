@@ -33,7 +33,7 @@ def main():
 
     with tab1:
         st.header("Average User Transaction Amount for the Last 6 Months")
-        query_1 = st.text_area("SQL Query", value="""  
+        query_1 = st.text_area("""  
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
                 TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
@@ -45,7 +45,7 @@ def main():
             WHERE 
                 cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
             GROUP BY 1, 2
-            ORDER BY month_date;  """)
+            ORDER BY month_date;  """
 
         # Create a button to fetch data
         if st.button("Fetch Data"):
@@ -66,7 +66,7 @@ def main():
 
     with tab2:
         st.header("Product Category with the Highest Total Sales")
-        query_2 = st.text_area("SQL Query", value="""  
+        query_2 = """  
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
                 TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
@@ -78,7 +78,7 @@ def main():
             WHERE 
                 cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
             GROUP BY 1, 2
-            ORDER BY month_date;  """)
+            ORDER BY month_date;  """
 
         # Create a button to fetch data
         if st.button("Fetch Data"):
@@ -99,7 +99,7 @@ def main():
 
     with tab3:
         st.header("Monthly Revenue Growth for the Last 6 Months")
-        query_3 = st.text_area("SQL Query", value="""  
+        query_3 = """  
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
                 TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
@@ -111,7 +111,7 @@ def main():
             WHERE 
                 cast(date_trunc('month', dt) AS date) >= date_trunc('month', current_date) - INTERVAL '5 months'
             GROUP BY 1, 2
-            ORDER BY month_date;  """)
+            ORDER BY month_date;  """
 
         # Create a button to fetch data
         if st.button("Fetch Data"):
