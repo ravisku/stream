@@ -33,7 +33,7 @@ def main():
 
     with tab1:
         st.header("Average User Transaction Amount for the Last 6 Months")
-        query_1 = st.text_area("""  
+        query_1 = """  
             SELECT 
                 cast(date_trunc('month', dt) AS date) AS month_date,
                 TO_CHAR(EXTRACT(MONTH FROM dt), 'FM00')||'_'||TO_CHAR(dt, 'Month') AS "month", 
